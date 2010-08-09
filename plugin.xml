@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.opensixen.osgi.interfaces.ICentralizedIDGenerator">
+      <generator
+            class="org.opensixen.dev.omvc.CentralizedIDGenerator">
+      </generator>
+   </extension>
+   <extension
+         point="org.opensixen.osgi.interfaces.IMenuInfoComponent">
+      <client
+            class="org.opensixen.dev.omvc.swing.OMVMenuInfoButton">
+      </client>
+   </extension>
+   <extension
+         point="org.opensixen.osgi.interfaces.IMenuAction">
+      <client
+            class="org.opensixen.dev.omvc.CommitMenuAction">
+      </client>
+   </extension>
+
+</plugin>
