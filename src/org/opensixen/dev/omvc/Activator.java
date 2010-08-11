@@ -10,6 +10,7 @@ import org.eclipse.riena.communication.core.factory.Register;
 import org.opensixen.dev.omvc.interfaces.IRemoteCentralizedIDGenerator;
 import org.opensixen.dev.omvc.interfaces.IRevisionUploader;
 import org.opensixen.dev.omvc.interfaces.IRienaService;
+import org.opensixen.dev.omvc.model.RienaTools;
 import org.opensixen.dev.omvc.model.ServiceRegistrationException;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -70,16 +71,13 @@ public class Activator implements BundleActivator {
 			return;
 		}		
 		String server = MSysConfig.getValue("DICTIONARY_ID_WEBSITE");
-		if (server.endsWith("/"))	{
-			server = server.substring(0, server.lastIndexOf('/'));
-		}
 		
 		// Registramos el Centralized ID Generator
-		String url = server + IRevisionUploader.path;		
+		String url = RienaTools.getURL(server , IRevisionUploader.path);		
 		uploader = register(IRevisionUploader.class, url);
 
 		// El RevisionUploader
-		url = server + IRemoteCentralizedIDGenerator.path;
+		url = RienaTools.getURL(server, IRemoteCentralizedIDGenerator.path);
 		generator = register(IRemoteCentralizedIDGenerator.class, url);
 		
 		registered = true;				

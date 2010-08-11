@@ -15,4 +15,5 @@ Require-Bundle: org.eclipse.riena.communication.core;bundle-version="2.0.0",
  org.opensixen.omvc.client;bundle-version="1.0.0"
 Bundle-Activator: org.opensixen.dev.omvc.Activator
 Bundle-ActivationPolicy: lazy
-Export-Package: org.opensixen.dev.omvc;x-internal:=true
+Export-Package: org.opensixen.dev.omvc,
+ org.opensixen.dev.omvc.swing
