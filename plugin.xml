@@ -19,5 +19,12 @@
             class="org.opensixen.dev.omvc.CommitMenuAction">
       </client>
    </extension>
+   <extension
+         id="org.opensixen.dev.omvc.UpdateMenuAction"
+         point="org.opensixen.osgi.interfaces.IMenuAction">
+      <client
+            class="org.opensixen.dev.omvc.UpdateMenuAction">
+      </client>
+   </extension>
 
 </plugin>

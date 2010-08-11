@@ -9,6 +9,7 @@ import javax.swing.JMenuItem;
 
 import org.compiere.apps.AEnv;
 import org.compiere.util.Env;
+import org.opensixen.dev.omvc.swing.CommitDialog;
 import org.opensixen.dev.omvc.swing.CommitPanel;
 import org.opensixen.osgi.AbstractMenuAction;
 import org.opensixen.osgi.interfaces.IMenuAction;
@@ -31,8 +32,11 @@ public class CommitMenuAction  extends AbstractMenuAction implements IMenuAction
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		CommitPanel panel = new CommitPanel(null, 0);
-		panel.setVisible(true);		
+		//CommitPanel panel = new CommitPanel(null, 0);
+		//panel.setVisible(true);
+		
+		CommitDialog dialog = new CommitDialog(null);
+		dialog.setVisible(true);
 	}
 
 }
