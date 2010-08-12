@@ -10,7 +10,6 @@ import javax.swing.JMenuItem;
 import org.compiere.apps.AEnv;
 import org.compiere.util.Env;
 import org.opensixen.dev.omvc.swing.CommitDialog;
-import org.opensixen.dev.omvc.swing.CommitPanel;
 import org.opensixen.osgi.AbstractMenuAction;
 import org.opensixen.osgi.interfaces.IMenuAction;
 
