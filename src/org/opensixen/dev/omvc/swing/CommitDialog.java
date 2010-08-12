@@ -32,6 +32,10 @@ import org.opensixen.dev.omvc.interfaces.IRevisionUploader;
 import org.opensixen.dev.omvc.model.Revision;
 import org.opensixen.dev.omvc.model.Script;
 import org.opensixen.dev.omvc.model.ServiceRegistrationException;
+import org.opensixen.model.MRevision;
+import org.opensixen.model.POFactory;
+import org.opensixen.model.QParam;
+import org.opensixen.omvc.client.Updater;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -229,6 +233,13 @@ public class CommitDialog extends CDialog {
 		}
 		
 		if (e.getSource().equals(bOk))	{
+			// Antes de hacer commit, hay que actualizarse
+			Updater updater = new Updater();
+			if (!updater.update())	{
+				log.severe("No se puede actualiar a la ultima revision antes de enviar nada.");
+				return;
+			}
+			
 			if (commit())	{
 				dispose();
 			}
@@ -269,14 +280,20 @@ public class CommitDialog extends CDialog {
 		}
 		
 		// Enviamos la revision
-		if (!uploader.uploadRevison(rev))	{
+		int revision_ID = uploader.uploadRevison(rev); 
+		if (revision_ID == -1)	{
 			MSG_STATUS = "No se puedo enviar la revision!";
 			log.severe(MSG_STATUS);
 			return false;
 		}
+
+		// Guardamos la revision actual
+		MRevision m_revision = POFactory.get(MRevision.class, new QParam(MRevision.COLUMNNAME_Project_ID, rev.getProject().getProject_ID()));
+		m_revision.setRevision(revision_ID);
+		m_revision.save();
+		
 		// Limpiamos los scripts para dejar paso a una nueva revision
 		Convert.resetLogMigrationScript();
 		return true;
 	}
-
 }
