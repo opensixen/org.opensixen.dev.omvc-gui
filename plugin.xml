@@ -26,5 +26,11 @@
             class="org.opensixen.dev.omvc.UpdateMenuAction">
       </client>
    </extension>
+   <extension
+         point="org.opensixen.osgi.interfaces.IMenuAction">
+      <client
+            class="org.opensixen.dev.omvc.SuscribeMenuAction">
+      </client>
+   </extension>
 
 </plugin>
