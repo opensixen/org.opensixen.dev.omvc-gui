@@ -32,5 +32,11 @@
             class="org.opensixen.dev.omvc.SuscribeMenuAction">
       </client>
    </extension>
+   <extension
+         point="org.opensixen.osgi.interfaces.IMenuAction">
+      <client
+            class="org.opensixen.dev.omvc.RunICommandMenuAction">
+      </client>
+   </extension>
 
 </plugin>
