@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 
+import javax.management.RuntimeErrorException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 
@@ -88,7 +89,14 @@ public class RunCommandDialog extends CDialog {
 		if (command == null )	{
 			return;
 		}
-		command.run();
+		command.prepare();
+		try {
+			command.doIt();
+		}
+		catch (Exception e)	{
+			throw new RuntimeException(e);
+		}
+		
 	}
 
 }
