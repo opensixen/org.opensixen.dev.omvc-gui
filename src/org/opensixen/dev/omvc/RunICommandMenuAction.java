@@ -9,7 +9,6 @@ import javax.swing.JMenuItem;
 
 import org.compiere.apps.AEnv;
 import org.compiere.util.Env;
-import org.opensixen.dev.omvc.swing.CommitDialog;
 import org.opensixen.dev.omvc.swing.RunCommandDialog;
 import org.opensixen.dev.omvc.swing.SuscribeDialog;
 import org.opensixen.osgi.AbstractMenuAction;

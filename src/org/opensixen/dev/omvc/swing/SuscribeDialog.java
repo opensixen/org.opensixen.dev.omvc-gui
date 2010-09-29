@@ -28,15 +28,14 @@ import org.compiere.util.CLogger;
 import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.opensixen.dev.omvc.Activator;
-import org.opensixen.dev.omvc.interfaces.IRevisionUploader;
 import org.opensixen.dev.omvc.model.Project;
 import org.opensixen.dev.omvc.model.Revision;
 import org.opensixen.dev.omvc.model.Script;
-import org.opensixen.dev.omvc.model.ServiceRegistrationException;
 import org.opensixen.model.MRevision;
 import org.opensixen.model.POFactory;
 import org.opensixen.model.QParam;
 import org.opensixen.omvc.client.Updater;
+import org.opensixen.omvc.client.model.ProjectComboBoxModel;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -61,7 +60,6 @@ public class SuscribeDialog extends CDialog {
 	private JLabel lDescription;
 	private JPanel mainPane;
 	private JLabel lHeader;
-	private IRevisionUploader uploader;
 	
 	private CLogger log = CLogger.getCLogger(getClass());
 	private ProjectComboBoxModel model;
@@ -84,13 +82,7 @@ public class SuscribeDialog extends CDialog {
 	public SuscribeDialog(JFrame frame) {
 		super(frame);
 		try	{
-			uploader = Activator.getUploader();
 			initGUI();
-		}
-		catch (ServiceRegistrationException e)	{
-			log.severe("No se puede registrar con el servidor de revisiones");
-			Activator.unregister();
-			setupInit();
 		}
 		catch(Exception ex) {
 			log.log(Level.SEVERE, ex.getMessage());
@@ -125,7 +117,7 @@ public class SuscribeDialog extends CDialog {
 					lDescription.setBounds(70, 42, 70, 14);
 					//END <<  lDescription
 					//START >>  cComboBox1
-					model = new ProjectComboBoxModel(uploader);
+					model = new ProjectComboBoxModel();
 					cComboBox1 = new CComboBox(model);
 					cComboBox1.setBounds(182, 105, 77, 21);
 					//END <<  cComboBox1
