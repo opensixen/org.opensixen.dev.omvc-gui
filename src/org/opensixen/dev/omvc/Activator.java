@@ -9,6 +9,7 @@ import org.eclipse.riena.communication.core.factory.ProxyFactory;
 import org.eclipse.riena.communication.core.factory.Register;
 import org.opensixen.dev.omvc.interfaces.IRemoteCentralizedIDGenerator;
 import org.opensixen.dev.omvc.model.RienaTools;
+import org.opensixen.omvc.client.proxy.OMVCAuthServiceProxy;
 import org.opensixen.omvc.client.proxy.RemoteConsoleProxy;
 import org.opensixen.omvc.client.proxy.RevisionDownloaderProxy;
 
@@ -34,9 +35,11 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext context) throws Exception {	
 		Activator.context = context;
 		OSXServiceConnectionHandler handler = new OSXServiceConnectionHandler();
+
 		// Set connection Handlers
 		RemoteConsoleProxy.setServiceConnectionHandler(handler);
 		RevisionDownloaderProxy.setServiceConnectionHandler(handler);
+		OMVCAuthServiceProxy.setServiceConnectionHandler(handler);
 	}
 
 	@Override

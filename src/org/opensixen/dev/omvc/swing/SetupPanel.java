@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 
+import org.compiere.apps.ADialog;
 import org.compiere.apps.AEnv;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.Query;
@@ -22,6 +23,7 @@ import org.compiere.util.Env;
 import org.compiere.util.Msg;
 import org.opensixen.model.POFactory;
 import org.opensixen.model.QParam;
+import org.opensixen.omvc.client.proxy.RevisionDownloaderProxy;
 
 public class SetupPanel extends CDialog {
 
@@ -29,8 +31,7 @@ public class SetupPanel extends CDialog {
 	
 	private CTextField fHost = new CTextField();
 	private CTextField fUser = new CTextField();
-	private CPassword fPass1 = new CPassword();
-	private CPassword fPass2 = new CPassword();
+	private CPassword fPass = new CPassword();
 	
 	private CButton bOk, bCancel;
 	
@@ -58,9 +59,8 @@ public class SetupPanel extends CDialog {
 		mainPane.add(new CLabel(Msg.getMsg(Env.getCtx(), "Username")));
 		mainPane.add(fUser);
 		mainPane.add(new CLabel(Msg.getMsg(Env.getCtx(), "Password")));
-		mainPane.add(fPass1);
-		mainPane.add(new CLabel(Msg.getMsg(Env.getCtx(), "Password")));
-		mainPane.add(fPass2);
+		mainPane.add(fPass);
+			
 		
 		CPanel btnPane = new CPanel();
 		panel.add(btnPane);
@@ -70,6 +70,7 @@ public class SetupPanel extends CDialog {
 		bCancel = new CButton(Msg.getMsg(Env.getCtx(), "Cancel"));
 		bCancel.addActionListener(this);
 		btnPane.add(bCancel);
+	
 	}
 	
 
@@ -82,16 +83,14 @@ public class SetupPanel extends CDialog {
 			saveInput();
 			dispose();
 		}
+		
+		
 	}
 
-	private void saveInput() {
-		
-		if (!fPass1.getPassword().equals(fPass2.getPassword()))	{
-			log.warning("Passwords diferents");
-		}
+	private void saveInput() {				
 		updateSysConfig("DICTIONARY_ID_WEBSITE",fHost.getText());
 		updateSysConfig("DICTIONARY_ID_USER", fUser.getText());
-		updateSysConfig("DICTIONARY_ID_PASSWORD", new String(fPass1.getPassword()));
+		updateSysConfig("DICTIONARY_ID_PASSWORD", new String(fPass.getPassword()));
 	}
 	
 	private boolean updateSysConfig(String name, String value)	{
@@ -103,13 +102,8 @@ public class SetupPanel extends CDialog {
 	private void load()	{
 		fHost.setText(MSysConfig.getValue("DICTIONARY_ID_WEBSITE"));
 		fUser.setText(MSysConfig.getValue("DICTIONARY_ID_USER"));
-		fPass1.setText(MSysConfig.getValue("DICTIONARY_ID_PASSWORD"));
-		fPass2.setText(new String(fPass1.getPassword()));
-	}
-	
-
-	
-	
+		fPass.setText(MSysConfig.getValue("DICTIONARY_ID_PASSWORD"));
+	}	
 }
 
 

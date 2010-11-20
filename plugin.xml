@@ -20,5 +20,19 @@
             class="org.opensixen.dev.omvc.RunICommandMenuAction">
       </client>
    </extension>
+   <extension
+         id="OSXServiceConnectionHandler"
+         point="org.eclipse.equinox.security.callbackHandler">
+      <callbackHandler
+            class="org.opensixen.dev.omvc.OSXServiceConnectionHandler">
+      </callbackHandler>
+   </extension>
+   <extension
+         point="org.eclipse.equinox.security.callbackHandlerMapping">
+      <callbackHandlerMapping
+            callbackHandlerId="org.opensixen.dev.omvc-gui.OSXServiceConnectionHandler"
+            configName="omvc">
+      </callbackHandlerMapping>
+   </extension>
 
 </plugin>

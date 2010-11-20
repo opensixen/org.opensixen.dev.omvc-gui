@@ -66,19 +66,7 @@ public class SuscribeDialog extends CDialog {
 	private String MSG_STATUS;
 	private CButton fSetupOMVC;
 
-	/**
-	* Auto-generated main method to display this JDialog
-	*/
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JFrame frame = new JFrame();
-				SuscribeDialog inst = new SuscribeDialog(frame);
-				inst.setVisible(true);
-			}
-		});
-	}
-	
+		
 	public SuscribeDialog(JFrame frame) {
 		super(frame);
 		try	{
