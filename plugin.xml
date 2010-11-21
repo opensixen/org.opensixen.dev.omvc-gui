@@ -34,5 +34,12 @@
             configName="omvc">
       </callbackHandlerMapping>
    </extension>
+   <extension
+         id="StartupModelValidator"
+         point="org.opensixen.osgi.interfaces.IModelValidator">
+      <validator
+            class="org.opensixen.dev.omvc.StartupModelValidator">
+      </validator>
+   </extension>
 
 </plugin>

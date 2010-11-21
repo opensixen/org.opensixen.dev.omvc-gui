@@ -136,7 +136,7 @@ public class UpdateDialog extends CDialog {
 	public ColumnDefinition[] getColumnDefinitions() {
 		ColumnDefinition[] cols = {
 				new ColumnDefinition("revision_ID", "ID", 20, DisplayType.Integer),
-				//new ColumnDefinition("project.name", "Proyecto", 180, DisplayType.String),
+				new ColumnDefinition("project.name", "Proyecto", 180, DisplayType.String),
 				new ColumnDefinition("description", "Descripcion", 300, DisplayType.String),
 				new ColumnDefinition("created", "Fecha", 150, DisplayType.Date)};
 		return cols;
