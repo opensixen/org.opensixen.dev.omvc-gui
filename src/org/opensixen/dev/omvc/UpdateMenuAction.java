@@ -3,6 +3,7 @@ package org.opensixen.dev.omvc;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.PrivilegedAction;
+import java.util.logging.Level;
 
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginException;
@@ -10,6 +11,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import org.compiere.apps.AEnv;
+import org.compiere.util.CLogger;
 
 import org.opensixen.dev.omvc.swing.SetupPanel;
 import org.opensixen.dev.omvc.swing.UpdateDialog;
@@ -21,7 +23,8 @@ import org.opensixen.osgi.interfaces.IMenuAction;
 
 public class UpdateMenuAction extends AbstractMenuAction implements
 		IMenuAction, ActionListener {
-
+	private CLogger log = CLogger.getCLogger(getClass());
+	
 	@Override
 	public void addAction(JMenuBar menuBar) {
 		JMenu menu = getMenu(menuBar, "Tools");
@@ -42,6 +45,7 @@ public class UpdateMenuAction extends AbstractMenuAction implements
 			updater = new Updater();
 		}
 		catch (Exception ex)	{
+			log.log(Level.SEVERE, "Error conectando al servidor.", ex);
 			SetupPanel panel = new SetupPanel(null, 0);
 			panel.setVisible(true);
 			return;
