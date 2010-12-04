@@ -4,10 +4,14 @@
 package org.opensixen.dev.omvc;
 
 import org.compiere.model.MClient;
+import org.compiere.model.MSysConfig;
 import org.compiere.model.ModelValidationEngine;
 import org.compiere.model.ModelValidator;
 import org.compiere.model.PO;
+import org.compiere.util.Env;
 import org.opensixen.omvc.client.proxy.OMVCAuthServiceProxy;
+import org.opensixen.omvc.client.proxy.RemoteConsoleProxy;
+import org.opensixen.omvc.client.proxy.RevisionDownloaderProxy;
 import org.opensixen.osgi.interfaces.IModelValidator;
 
 /**
@@ -27,8 +31,7 @@ public class StartupModelValidator implements IModelValidator {
 	 */
 	@Override
 	public void initialize(ModelValidationEngine engine, MClient client) {
-		// TODO Auto-generated method stub
-		
+		engine.addModelChange(MSysConfig.Table_Name, this);		
 	}
 
 	/* (non-Javadoc)
@@ -36,8 +39,7 @@ public class StartupModelValidator implements IModelValidator {
 	 */
 	@Override
 	public int getAD_Client_ID() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Env.getAD_Client_ID(Env.getCtx());
 	}
 
 	/**
@@ -47,7 +49,13 @@ public class StartupModelValidator implements IModelValidator {
 	@Override
 	public String login(int AD_Org_ID, int AD_Role_ID, int AD_User_ID) {
 		// Register Auth proxy
-		OMVCAuthServiceProxy.register();
+		OSXServiceConnectionHandler handler = OSXServiceConnectionHandler.getInstance();
+
+		// Set connection Handlers
+		RemoteConsoleProxy.getInstance().setServiceConnectionHandler(handler);
+		RevisionDownloaderProxy.getInstance().setServiceConnectionHandler(handler);
+		OMVCAuthServiceProxy.getInstance().setServiceConnectionHandler(handler);
+		OMVCAuthServiceProxy.getInstance().register();
 		return null;
 	}
 
@@ -56,7 +64,9 @@ public class StartupModelValidator implements IModelValidator {
 	 */
 	@Override
 	public String modelChange(PO po, int type) throws Exception {
-		// TODO Auto-generated method stub
+		if (type == ModelValidator.CHANGETYPE_NEW || type == ModelValidator.CHANGETYPE_CHANGE)	{
+			OSXServiceConnectionHandler.getInstance().fireConnectionChange();
+		}
 		return null;
 	}
 

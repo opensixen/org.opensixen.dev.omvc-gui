@@ -4,6 +4,7 @@
 package org.opensixen.dev.omvc;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -13,6 +14,7 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 
 import org.compiere.model.MSysConfig;
 import org.opensixen.riena.client.proxy.ServiceConnection;
+import org.opensixen.riena.interfaces.IConnectionChangeListener;
 import org.opensixen.riena.interfaces.IServiceConnectionHandler;
 
 /**
@@ -25,6 +27,24 @@ import org.opensixen.riena.interfaces.IServiceConnectionHandler;
 public class OSXServiceConnectionHandler implements IServiceConnectionHandler, CallbackHandler {
 
 	private ServiceConnection connection;
+	
+	private ArrayList<IConnectionChangeListener> connectionChangeListeners = new ArrayList<IConnectionChangeListener>();
+	
+	private static OSXServiceConnectionHandler instance;
+	
+	public static OSXServiceConnectionHandler getInstance()	{
+		if (instance == null)	{
+			instance = new OSXServiceConnectionHandler();
+		}
+		return instance;
+	}
+	
+	/**
+	 * Private constructor
+	 */
+	public OSXServiceConnectionHandler()	{
+		
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.opensixen.riena.interfaces.IServiceConnectionHandler#getServiceConnection()
@@ -52,7 +72,30 @@ public class OSXServiceConnectionHandler implements IServiceConnectionHandler, C
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see org.opensixen.riena.interfaces.IServiceConnectionHandler#addConnectionChangeListener(org.opensixen.riena.interfaces.IConnectionChangeListener)
+	 */
+	@Override
+	public void addConnectionChangeListener(IConnectionChangeListener listener) {
+		connectionChangeListeners.add(listener);
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see org.opensixen.riena.interfaces.IServiceConnectionHandler#removeConnectionChangeListener(org.opensixen.riena.interfaces.IConnectionChangeListener)
+	 */
+	@Override
+	public void removeConnectionChangeListener(IConnectionChangeListener listener) {
+		if (connectionChangeListeners.contains(listener))	{
+			connectionChangeListeners.remove(listener);
+		}		
+	}	
 	
-	
+	public void fireConnectionChange()	{
+		connection = null;
+		for (IConnectionChangeListener listener : connectionChangeListeners)	{
+			listener.fireConnectionChange();
+		}
+	}	
 	
 }

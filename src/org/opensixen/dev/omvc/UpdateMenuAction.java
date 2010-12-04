@@ -16,7 +16,6 @@ import org.compiere.util.CLogger;
 import org.opensixen.dev.omvc.swing.SetupPanel;
 import org.opensixen.dev.omvc.swing.UpdateDialog;
 import org.opensixen.omvc.client.Updater;
-import org.opensixen.omvc.client.proxy.OMVCAuthServiceProxy;
 import org.opensixen.omvc.client.proxy.RemoteConsoleProxy;
 import org.opensixen.osgi.AbstractMenuAction;
 import org.opensixen.osgi.interfaces.IMenuAction;
@@ -53,7 +52,7 @@ public class UpdateMenuAction extends AbstractMenuAction implements
 
 		// Run app in secure context
 		try {
-			Subject.doAs(RemoteConsoleProxy.getLoginContext().getSubject(),
+			Subject.doAs(RemoteConsoleProxy.getInstance().getLoginContext().getSubject(),
 					getRunAction(updater));
 		} catch (LoginException ex) {
 			// TODO Auto-generated catch block
