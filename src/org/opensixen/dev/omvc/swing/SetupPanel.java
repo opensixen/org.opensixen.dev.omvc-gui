@@ -63,7 +63,10 @@ package org.opensixen.dev.omvc.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
@@ -71,6 +74,7 @@ import javax.swing.BoxLayout;
 
 import org.compiere.apps.ADialog;
 import org.compiere.apps.AEnv;
+import org.compiere.apps.ConfirmPanel;
 import org.compiere.model.MSysConfig;
 import org.compiere.model.Query;
 import org.compiere.swing.CButton;
@@ -98,11 +102,15 @@ public class SetupPanel extends CDialog {
 
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Descripción de campos
+	 */
 	private CTextField fHost = new CTextField();
 	private CTextField fUser = new CTextField();
 	private CPassword fPass = new CPassword();
 	
-	private CButton bOk, bCancel;
+	//Paneles
+	private ConfirmPanel confirmPanel = new ConfirmPanel(true);
 	
 	private CLogger log = CLogger.getCLogger(getClass());
 	
@@ -122,33 +130,33 @@ public class SetupPanel extends CDialog {
 
 		CPanel mainPane = new CPanel();
 		panel.add(mainPane);
-		mainPane.setLayout(new GridLayout(0, 2));		
-		mainPane.add(new CLabel(Msg.getMsg(Env.getCtx(), "Host")));
-		mainPane.add(fHost);
-		mainPane.add(new CLabel(Msg.getMsg(Env.getCtx(), "Username")));
-		mainPane.add(fUser);
-		mainPane.add(new CLabel(Msg.getMsg(Env.getCtx(), "Password")));
-		mainPane.add(fPass);
+
+		mainPane.setLayout(new GridBagLayout());
+		mainPane.add( new CLabel(Msg.getMsg(Env.getCtx(), "Host")),new GridBagConstraints( 0,0,1,1,0.0,0.0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets( 2,2,2,2 ),0,0 ));
+		mainPane.add( fHost,new GridBagConstraints( 1,0,1,1,0.3,0.0,GridBagConstraints.WEST,GridBagConstraints.BOTH,new Insets( 2,2,2,20 ),0,0 ));
+
+		mainPane.add( new CLabel(Msg.getMsg(Env.getCtx(), "Username")),new GridBagConstraints( 0,1,1,1,0.0,0.0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets( 2,2,2,2 ),0,0 ));
+		mainPane.add( fUser,new GridBagConstraints( 1,1,1,1,0.3,0.0,GridBagConstraints.WEST,GridBagConstraints.BOTH,new Insets( 2,2,2,20 ),0,0 ));
+
+		mainPane.add( new CLabel(Msg.getMsg(Env.getCtx(), "Password")),new GridBagConstraints( 0,2,1,1,0.0,0.0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets( 2,2,2,2 ),0,0 ));
+		mainPane.add( fPass,new GridBagConstraints( 1,2,1,1,0.3,0.0,GridBagConstraints.WEST,GridBagConstraints.BOTH,new Insets( 2,2,2,20 ),0,0 ));
 			
 		
 		CPanel btnPane = new CPanel();
+		btnPane.setLayout(new BorderLayout());
 		panel.add(btnPane);
-		bOk = new CButton(Msg.getMsg(Env.getCtx(), "Ok"));
-		bOk.addActionListener(this);
-		btnPane.add(bOk);
-		bCancel = new CButton(Msg.getMsg(Env.getCtx(), "Cancel"));
-		bCancel.addActionListener(this);
-		btnPane.add(bCancel);
+		btnPane.add(confirmPanel,BorderLayout.EAST);
+		confirmPanel.addActionListener(this);
 	
 	}
 	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(bCancel))	{
+		if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))	{
 			dispose();
 		}
-		if (e.getSource().equals(bOk))	{
+		if (e.getActionCommand().equals(ConfirmPanel.A_OK))	{
 			saveInput();
 			dispose();
 		}

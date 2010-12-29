@@ -21,3 +21,4 @@ Bundle-Activator: org.opensixen.dev.omvc.Activator
 Bundle-ActivationPolicy: lazy
 Export-Package: org.opensixen.dev.omvc,
  org.opensixen.dev.omvc.swing
+Import-Package: org.jdesktop.swingx
