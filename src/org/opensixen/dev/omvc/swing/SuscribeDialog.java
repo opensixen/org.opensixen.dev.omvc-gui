@@ -61,7 +61,10 @@
 
 package org.opensixen.dev.omvc.swing;
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 
@@ -78,6 +81,7 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingUtilities;
 
+import org.compiere.apps.ConfirmPanel;
 import org.compiere.dbPort.Convert;
 import org.compiere.swing.CButton;
 import org.compiere.swing.CComboBox;
@@ -112,15 +116,17 @@ import org.opensixen.omvc.client.model.ProjectComboBoxModel;
 */
 public class SuscribeDialog extends CDialog {
 
-	private JPanel jPanel1;
-	private JButton bOk;
-	private JButton bCancel;
-	private CComboBox cComboBox1;
+	private CPanel PPanel = new CPanel();
+	private CPanel southPanel = new CPanel();
+	private ConfirmPanel confirmPanel = new ConfirmPanel(true);
+	//private JButton bOk;
+	//private JButton bCancel;
+	private CComboBox fProject;
 	private JLabel lProject;
 	private CTextArea fDescription;
-	private JLabel lDescription;
-	private JPanel mainPane;
-	private JLabel lHeader;
+	private CLabel lDescription;
+	private CPanel mainPane;
+	private CLabel lHeader;
 	
 	private CLogger log = CLogger.getCLogger(getClass());
 	private ProjectComboBoxModel model;
@@ -138,105 +144,42 @@ public class SuscribeDialog extends CDialog {
 		}
 		
 	}
+	
+	private void initGUI(){
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(PPanel,BorderLayout.CENTER);
+		getContentPane().add(confirmPanel,BorderLayout.SOUTH);
+		confirmPanel.addActionListener(this);
+		PPanel.setLayout(new GridBagLayout());
 		
-	private void initGUI() {
-		try {
-			{
-				BorderLayout thisLayout = new BorderLayout();
-				getContentPane().setLayout(thisLayout);
-				{
-					jPanel1 = new JPanel();
-					getContentPane().add(jPanel1, BorderLayout.NORTH);
-					{
-						lHeader = new JLabel();
-						jPanel1.add(lHeader);
-						lHeader.setText("Suscribirse a proyecto.");
-						lHeader.setFont(new java.awt.Font("Dialog",1,14));
-					}
-				}
-				{
-					mainPane = new JPanel();
-					getContentPane().add(mainPane, BorderLayout.CENTER);
-					GroupLayout mainPaneLayout = new GroupLayout((JComponent)mainPane);
-					mainPane.setLayout(mainPaneLayout);
-					mainPane.setPreferredSize(new java.awt.Dimension(378, 245));
-					//START >>  lDescription
-					lDescription = new JLabel();
-					lDescription.setText("Desciption");
-					lDescription.setBounds(70, 42, 70, 14);
-					//END <<  lDescription
-					//START >>  cComboBox1
-					model = new ProjectComboBoxModel();
-					cComboBox1 = new CComboBox(model);
-					cComboBox1.setBounds(182, 105, 77, 21);
-					//END <<  cComboBox1
-					//START >>  fDescription
-					fDescription = new CTextArea();
-					fDescription.setBounds(182, 14, 147, 70);
-					fDescription.setEditable(false);
-					//END <<  fDescription
-					//START >>  lProject
-					lProject = new JLabel();
-					lProject.setText("Project");
-					lProject.setBounds(84, 98, 49, 14);
-					//END <<  lProject
-					//START >>  bCancel
-					bCancel = new JButton();
-					bCancel.addActionListener(this);
-					bCancel.setText("Cancel");
-					//END <<  bCancel
-					//START >>  bOk
-					bOk = new JButton();
-					bOk.addActionListener(this);
-					bOk.setText("Ok");
-					//END <<  bOk
-					mainPaneLayout.setHorizontalGroup(mainPaneLayout.createSequentialGroup()
-						.addContainerGap(48, 48)
-						.addGroup(mainPaneLayout.createParallelGroup()
-						    .addGroup(mainPaneLayout.createSequentialGroup()
-						        .addGap(0, 0, Short.MAX_VALUE)
-						        .addComponent(lDescription, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
-						    .addGroup(GroupLayout.Alignment.LEADING, mainPaneLayout.createSequentialGroup()
-						        .addPreferredGap(lDescription, lProject, LayoutStyle.ComponentPlacement.INDENT)
-						        .addComponent(lProject, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-						        .addGap(9)))
-						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(mainPaneLayout.createParallelGroup()
-						    .addComponent(fDescription, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
-						    .addGroup(GroupLayout.Alignment.LEADING, mainPaneLayout.createSequentialGroup()
-						        .addGroup(mainPaneLayout.createParallelGroup()
-						            .addGroup(GroupLayout.Alignment.LEADING, mainPaneLayout.createSequentialGroup()
-						                .addGap(0, 66, GroupLayout.PREFERRED_SIZE)
-						                .addComponent(bOk, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
-						            .addGroup(GroupLayout.Alignment.LEADING, mainPaneLayout.createSequentialGroup()
-						                .addComponent(cComboBox1, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
-						                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)))
-						        .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-						        .addComponent(bCancel, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap(37, 37));
-					mainPaneLayout.setVerticalGroup(mainPaneLayout.createSequentialGroup()
-						.addContainerGap(21, Short.MAX_VALUE)
-						.addGroup(mainPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						    .addComponent(cComboBox1, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-						    .addComponent(lProject, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-						.addGroup(mainPaneLayout.createParallelGroup()
-						    .addComponent(fDescription, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-						    .addGroup(GroupLayout.Alignment.LEADING, mainPaneLayout.createSequentialGroup()
-						        .addGap(26)
-						        .addComponent(lDescription, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-						        .addGap(44)))
-						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 0, GroupLayout.PREFERRED_SIZE)
-						.addGroup(mainPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-						    .addComponent(bOk, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
-						    .addComponent(bCancel, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(27, 27));
-				}
-			}
-			this.setSize(400, 250);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		lHeader = new CLabel();
+		lHeader.setText(Msg.getMsg(Env.getCtx(), "Project Subscribe"));
+		lHeader.setFont(new java.awt.Font("Dialog",1,14));
+		
+		//Description
+		lDescription = new CLabel();
+		lDescription.setText(Msg.getMsg(Env.getCtx(), "Description"));
+		
+		fDescription = new CTextArea();
+		fDescription.setEditable(false);
+		lDescription.setLabelFor(fDescription);
+		
+		//Proyecto
+		lProject = new CLabel();
+		lProject.setText(Msg.getMsg(Env.getCtx(), "Project"));
+		
+		model = new ProjectComboBoxModel();
+		fProject = new CComboBox(model);
+		lProject.setLabelFor(fProject);
+		
+		PPanel.add( lHeader,new GridBagConstraints( 1,0,1,1,0.0,0.0,GridBagConstraints.CENTER,GridBagConstraints.NONE,new Insets( 2,2,10,20 ),0,0 ));
+
+		PPanel.add( lProject,new GridBagConstraints( 0,1,1,1,0.0,0.0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets( 2,2,2,2 ),0,0 ));
+		PPanel.add( fProject,new GridBagConstraints( 1,1,1,1,0.3,0.0,GridBagConstraints.WEST,GridBagConstraints.BOTH,new Insets( 2,2,2,20 ),0,0 ));
+		PPanel.add( lDescription,new GridBagConstraints( 0,2,1,1,0.0,0.0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets( 20,2,2,2 ),0,0 ));
+		PPanel.add( fDescription,new GridBagConstraints( 1,2,GridBagConstraints.RELATIVE,GridBagConstraints.RELATIVE,1.0,1.0,GridBagConstraints.WEST,GridBagConstraints.BOTH,new Insets( 20,2,2,10 ),0,0 ));
+		this.setSize(400, 250);
+		
 	}
 
 	
@@ -271,11 +214,11 @@ public class SuscribeDialog extends CDialog {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(bCancel))	{
+		if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))	{
 			dispose();
 		}
 		
-		if (e.getSource().equals(bOk))	{			
+		if (e.getActionCommand().equals(ConfirmPanel.A_OK))	{			
 			
 			if (suscribe())	{
 				dispose();
@@ -293,7 +236,7 @@ public class SuscribeDialog extends CDialog {
 		Project project = model.getSelectedProject();
 		MRevision rev = POFactory.get(MRevision.class, new QParam(MRevision.COLUMNNAME_Project_ID, project.getProject_ID()));
 		if (rev != null)	{
-			fDescription.setText("Ya esta suscrito a ese proyecto!.");
+			fDescription.setText(Msg.getMsg(Env.getCtx(), "Already Subscribed to this project"));
 			return false;
 		}
 		

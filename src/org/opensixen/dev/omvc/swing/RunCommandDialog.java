@@ -61,16 +61,23 @@
 
 package org.opensixen.dev.omvc.swing;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
 import javax.management.RuntimeErrorException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 
+import org.adempiere.plaf.AdempierePLAF;
 import org.compiere.apps.AEnv;
+import org.compiere.apps.ConfirmPanel;
 import org.compiere.swing.CButton;
 import org.compiere.swing.CDialog;
 import org.compiere.swing.CLabel;
@@ -92,9 +99,17 @@ import org.opensixen.osgi.interfaces.ICommand;
  */
 public class RunCommandDialog extends CDialog {
 
+	/**
+	 * Descripcion de campos
+	 */
+	
 	private CTextField fCmd;
-	private CButton bRun;
-	private CButton bClose;
+	private CLabel header;
+	
+	//Paneles
+	private CPanel mainPanel;
+	private CPanel centerPanel;
+	private ConfirmPanel confirm = new ConfirmPanel(true);
 
 
 	public RunCommandDialog(Frame owner) throws HeadlessException {
@@ -105,34 +120,40 @@ public class RunCommandDialog extends CDialog {
 	
 	
 	private void jbInit()	{
-		CPanel panel = new CPanel();
-		getContentPane().add(panel);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-		panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-
-		CPanel mainPane = new CPanel();
-		panel.add(mainPane);
-		mainPane.setLayout(new GridLayout(0, 2));		
-		mainPane.add(new CLabel(Msg.getMsg(Env.getCtx(), "Command")));
-		fCmd = new CTextField();
-		mainPane.add(fCmd);
+		centerPanel = new CPanel();
+		centerPanel.setLayout(new GridBagLayout());
 		
-		CPanel btnPane = new CPanel();
-		panel.add(btnPane);
-		bRun = new CButton(Msg.getMsg(Env.getCtx(), "Run"));
-		bRun.addActionListener(this);
-		btnPane.add(bRun);
-		bClose = new CButton(Msg.getMsg(Env.getCtx(), "Close"));
-		bClose.addActionListener(this);
-		btnPane.add(bClose);
+		mainPanel = new CPanel();
+		mainPanel.setLayout(new BorderLayout());
+		
+		getContentPane().add(mainPanel);
+
+		mainPanel.add(centerPanel,BorderLayout.CENTER);
+		mainPanel.add(confirm,BorderLayout.SOUTH);
+		
+		centerPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		
+		Font font = AdempierePLAF.getFont_Field().deriveFont(18f);
+		header = new CLabel(Msg.translate(Env.getCtx(), "System Command"));
+		header.setFontBold(true);
+		header.setFont(font);
+		
+		fCmd = new CTextField(50);
+		
+		centerPanel.add( header,new GridBagConstraints( 1,0,1,1,0.0,0.0,GridBagConstraints.CENTER,GridBagConstraints.NONE,new Insets( 2,2,20,2 ),0,0 ));
+
+		centerPanel.add( new CLabel(Msg.getMsg(Env.getCtx(), "Command")),new GridBagConstraints( 0,1,1,1,0.0,0.0,GridBagConstraints.WEST,GridBagConstraints.NONE,new Insets( 2,2,2,2 ),0,0 ));
+		centerPanel.add( fCmd,new GridBagConstraints( 1,1,1,1,0.3,0.0,GridBagConstraints.WEST,GridBagConstraints.BOTH,new Insets( 2,2,2,2 ),0,0 ));	
+		
+		confirm.addActionListener(this);
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(bClose))	{
+		if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))	{
 			dispose();
 		}
-		if (e.getSource().equals(bRun))	{
+		if (e.getSource().equals(ConfirmPanel.A_OK))	{
 			run();
 		}
 	}
