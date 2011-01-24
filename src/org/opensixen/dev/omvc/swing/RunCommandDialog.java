@@ -153,7 +153,7 @@ public class RunCommandDialog extends CDialog {
 		if (e.getActionCommand().equals(ConfirmPanel.A_CANCEL))	{
 			dispose();
 		}
-		if (e.getSource().equals(ConfirmPanel.A_OK))	{
+		if (e.getActionCommand().equals(ConfirmPanel.A_OK))	{
 			run();
 		}
 	}
